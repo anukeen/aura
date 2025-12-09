@@ -3,578 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AURA | Ultimate Wellness Experience</title>
+    <title>LUMIÈRE | Private Beauty Residence</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Manrope:wght@200;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
-        /* --- 0. PRELOADER & SETUP --- */
+        /* --- 1. SETTINGS & VARIABLES --- */
         :root {
-            --gold: #d4af37;
-            --gold-dim: #8a7035;
-            --black: #050505;
-            --text: #e1e1e1;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(212, 175, 55, 0.15);
+            /* Новый оттенок золота: Шампань (менее желтый, более дорогой) */
+            --gold: #e6d2b5; 
+            --gold-dim: #8c7d66;
+            --bg-dark: #0b0b0b; /* Почти черный, но мягче */
+            --bg-panel: #141414;
+            --white: #f0f0f0;
+            --text-muted: #888888;
+            --border-thin: 1px solid rgba(230, 210, 181, 0.15);
         }
 
-        /* Зернистость */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.4;
-        }
-
-        /* Кастомный курсор (десктоп) */
-        @media (min-width: 992px) {
-            .cursor-dot, .cursor-circle {
-                position: fixed;
-                top: 0; left: 0;
-                transform: translate(-50%, -50%);
-                border-radius: 50%;
-                z-index: 10000;
-                pointer-events: none;
-            }
-            .cursor-dot { width: 5px; height: 5px; background: var(--gold); }
-            .cursor-circle {
-                width: 40px; height: 40px;
-                border: 1px solid rgba(212, 175, 55, 0.5);
-                transition: width 0.3s, height 0.3s;
-            }
-            body:hover .cursor-circle { opacity: 1; }
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        @media (max-width: 991px) { * { cursor: auto; } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
             overflow-x: hidden;
             width: 100%;
-            background-color: var(--black);
-            color: var(--text);
-            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
         }
 
-        /* Preloader */
-        .preloader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--black);
-            z-index: 20000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            transition: opacity 1s ease, visibility 1s ease;
-        }
-        
-        .loader-logo {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-            color: var(--gold);
-            animation: pulseGold 2s infinite;
+        /* Типографика Arasan-style: Крупная антиква */
+        h1, h2, h3, h4 { 
+            font-family: 'Bodoni Moda', serif; 
+            text-transform: uppercase; 
+            font-weight: 400; 
+            letter-spacing: 0.5px;
         }
 
-        .loader-line {
-            width: 0;
-            height: 2px;
-            background: var(--gold);
-            margin-top: 20px;
-            animation: loadLine 1.5s ease-in-out forwards;
-        }
+        /* --- 2. UI COMPONENTS --- */
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
 
-        @keyframes loadLine { to { width: 150px; } }
-        @keyframes pulseGold { 0% { opacity: 0.5; } 50% { opacity: 1; text-shadow: 0 0 20px var(--gold); } 100% { opacity: 0.5; } }
-
-        /* --- 1. TYPOGRAPHY & UTILS --- */
-        h1, h2, h3, h4 { font-family: 'Cinzel', serif; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
-        .accent { color: var(--gold); }
-
-        .btn-gold {
-            position: relative;
-            padding: 15px 40px;
+        .btn-luxury {
+            display: inline-block;
+            padding: 18px 45px;
             border: 1px solid var(--gold);
             color: var(--gold);
             background: transparent;
             text-transform: uppercase;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             letter-spacing: 3px;
-            transition: all 0.4s ease;
+            transition: all 0.5s ease;
+            position: relative;
             overflow: hidden;
-            display: inline-block;
+            cursor: pointer;
             text-decoration: none;
-            z-index: 1;
         }
-
-        .btn-gold::before {
+        
+        .btn-luxury::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 0%; height: 100%;
+            width: 0%; height: 100%;
+            top: 0; left: 0;
             background: var(--gold);
-            transition: all 0.4s ease;
             z-index: -1;
+            transition: all 0.5s ease;
         }
+        
+        .btn-luxury:hover { color: var(--bg-dark); }
+        .btn-luxury:hover::after { width: 100%; }
 
-        .btn-gold:hover { color: var(--black); box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
-        .btn-gold:hover::before { width: 100%; }
+        .section-padding { padding: 140px 0; }
+        
+        .title-block { text-align: center; margin-bottom: 80px; }
+        .title-block h2 { font-size: 3.5rem; color: var(--gold); margin-bottom: 15px; }
+        .title-block span { display: block; height: 1px; width: 60px; background: var(--gold); margin: 20px auto; }
+        .title-block p { color: var(--text-muted); font-size: 0.95rem; max-width: 500px; margin: 0 auto; letter-spacing: 1px; }
 
-        /* --- 2. HEADER --- */
+        /* --- 3. HEADER --- */
         header {
-            position: fixed;
-            width: 100%;
-            padding: 25px 5%;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            mix-blend-mode: difference;
+            position: fixed; top: 0; left: 0; width: 100%; padding: 30px 50px; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            mix-blend-mode: difference; /* Инверсия цвета для читаемости на любом фото */
+            color: #fff;
         }
         
-        .logo { font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: 5px; }
+        .brand { font-family: 'Bodoni Moda'; font-size: 2rem; letter-spacing: 2px; font-weight: 600; }
         
-        .nav-desk { display: flex; gap: 40px; }
-        .nav-desk a { color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; position: relative; text-decoration: none; }
-        .nav-desk a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: #fff; transition: 0.3s; }
-        .nav-desk a:hover::after { width: 100%; }
+        .nav-menu { display: flex; gap: 50px; }
+        .nav-menu a { 
+            text-decoration: none; color: #fff; font-size: 0.8rem; text-transform: uppercase; 
+            letter-spacing: 2px; position: relative; 
+        }
+        .nav-menu a::before {
+            content: ''; position: absolute; bottom: -5px; right: 0; width: 0; height: 1px; 
+            background: #fff; transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .nav-menu a:hover::before { width: 100%; left: 0; }
 
-        /* --- 3. HERO SECTION (ISPRАВЛЕНИЕ ЦЕНТРОВКИ) --- */
+        .burger-menu { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- 4. HERO (Atmospheric) --- */
         .hero {
-            position: relative;
             height: 100vh;
-            /* ИСПОЛЬЗУЕМ FLEXBOX ДЛЯ ИДЕАЛЬНОГО ЦЕНТРА */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            text-align: center; /* Центрируем текст внутри */
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center/cover;
-            filter: brightness(0.4) contrast(1.1);
-            transform: scale(1.1);
-            animation: breath 10s infinite alternate;
-        }
-
-        @keyframes breath { from { transform: scale(1.1); } to { transform: scale(1.15); } }
-
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            animation: moveBlob 20s infinite alternate;
-        }
-        .blob-1 { top: 20%; left: 20%; width: 300px; height: 300px; background: #6b4c1e; }
-        .blob-2 { bottom: 10%; right: 10%; width: 400px; height: 400px; background: #1a2e2e; }
-
-        /* ИСПРАВЛЕНО: Убрали absolute positioning, теперь просто блок в потоке flex */
-        .hero-content-readable {
-            position: relative; 
-            z-index: 3;
-            width: 100%;
-            max-width: 1200px;
-            padding: 0 20px;
-            /* mix-blend-mode вызывает баги на iPhone с текстом, убрали для надежности */
-        }
-
-        .hero h1 {
-            font-size: 6vw;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            background: linear-gradient(to bottom, #fff, #aaa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.2rem;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            margin-bottom: 40px;
-            color: var(--gold);
-            display: block; /* Чтобы точно занимал строку */
-        }
-
-        /* --- 4. MARQUEE --- */
-        .marquee-container {
-            background: var(--gold);
-            color: var(--black);
-            padding: 15px 0;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            z-index: 5;
-            transform: rotate(-2deg) scale(1.1);
-            margin: -30px 0 50px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .marquee-content {
-            display: inline-block;
-            animation: marquee 20s linear infinite;
-        }
-
-        .marquee-item {
-            display: inline-block;
-            font-family: 'Manrope', sans-serif;
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 1.2rem;
-            margin: 0 30px;
-        }
-
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-        /* --- 5. INTRO & SECTIONS --- */
-        .intro-grid {
-            padding: 100px 10%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .stat-box {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid var(--border);
-            padding-top: 30px;
-            margin-top: 40px;
-        }
-
-        .stat h3 { font-size: 2.5rem; margin-bottom: 5px; }
-        .stat p { font-size: 0.8rem; letter-spacing: 2px; color: #888; text-transform: uppercase; }
-
-        .services-section {
-            padding: 100px 5%;
-            background: radial-gradient(circle at 50% 50%, #151d1d 0%, #050505 100%);
-            position: relative;
-        }
-
-        /* ИСПРАВЛЕНИЕ ЗАГОЛОВКОВ: Обычный flow, без absolute */
-        .section-header { text-align: center; margin-bottom: 80px; width: 100%; }
-        .section-header h2 { font-size: 3rem; margin-bottom: 20px; }
-
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .glass-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-            transition: 0.5s;
-            backdrop-filter: blur(10px);
-        }
-
-        .glass-card:hover { transform: translateY(-10px); border-color: var(--gold); background: rgba(255,255,255,0.05); }
-
-        .card-num {
-            position: absolute;
-            top: 20px; right: 20px;
-            font-family: 'Cinzel', serif;
-            font-size: 4rem;
-            color: rgba(255,255,255,0.05);
-            transition: 0.5s;
-        }
-        
-        .glass-card:hover .card-num { color: rgba(212, 175, 55, 0.2); transform: scale(1.2); }
-        .glass-card h3 { font-size: 1.5rem; margin-bottom: 20px; color: #fff; }
-        .glass-card p { color: #aaa; line-height: 1.6; font-size: 0.95rem; margin-bottom: 30px; }
-        
-        .price-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px dashed #333;
-            padding-top: 20px;
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-        }
-
-        /* --- 6. PRICING & VIDEO --- */
-        .pricing-section { padding: 100px 10%; max-width: 1000px; margin: 0 auto; }
-
-        .accordion-item { border-bottom: 1px solid #333; margin-bottom: 10px; }
-        .accordion-header { padding: 25px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; }
-        .accordion-header:hover h4 { padding-left: 10px; color: #fff; }
-        .accordion-header h4 { transition: 0.3s; color: #aaa; font-size: 1.2rem; }
-        .accordion-price { color: var(--gold); font-family: 'Cinzel'; }
-        .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; color: #888; font-size: 0.9rem; line-height: 1.6; }
-        .accordion-body p { padding-bottom: 25px; }
-        .active .accordion-body { max-height: 200px; }
-        .active .accordion-header h4 { color: var(--gold); padding-left: 10px; }
-
-        .video-banner {
-            height: 60vh;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: fixed url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
-        }
-
-        .video-overlay {
-            background: rgba(0,0,0,0.6);
-            padding: 50px;
-            border: 1px solid var(--gold);
-            text-align: center;
-            backdrop-filter: blur(5px);
-            /* Убрана абсолютная центровка, используется flex родителя */
-        }
-
-        /* --- 7. FOOTER --- */
-        footer { background: #080808; padding: 80px 5% 30px; border-top: 1px solid #222; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; margin-bottom: 60px; }
-        .footer-col h5 { color: #fff; margin-bottom: 25px; letter-spacing: 2px; text-transform: uppercase; }
-        .footer-col p, .footer-col a { color: #888; display: block; margin-bottom: 15px; font-size: 0.95rem; text-decoration: none; transition: 0.3s; }
-        .footer-col a:hover { color: var(--gold); padding-left: 5px; }
-        .big-contact { font-size: 2rem; color: var(--gold); font-family: 'Cinzel', serif; display: block; margin-top: 20px; }
-        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #1a1a1a; color: #444; font-size: 0.8rem; }
-
-        /* --- MOBILE TWEAKS --- */
-        @media (max-width: 768px) {
-            .nav-desk { display: none; }
-            /* Исправляем размер шрифта для мобильных, чтобы не вылезал */
-            .hero h1 { font-size: 3.5rem; } 
-            .intro-grid { grid-template-columns: 1fr; gap: 30px; padding: 60px 5%; }
-            .marquee-container { transform: rotate(0); margin: 0 0 30px 0; }
-            .video-overlay { width: 90%; padding: 30px; }
-            .cursor-dot, .cursor-circle { display: none; }
-            .stat-box { flex-direction: column; gap: 20px; text-align: center; }
-            
-            /* Убираем возможные переполнения */
-            .section-header h2 { font-size: 2rem; word-wrap: break-word; }
+            background: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+            /* Фото: Темный интерьер с акцентом на архитектуру, а не на лица */
         }
         
-        .float-wa {
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); /* Легкое затемнение */
+        }
+
+        .hero-inner {
+            position: relative; z-index: 2; text-align: center; color: var(--white);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 60px 80px;
+            backdrop-filter: blur(5px); /* Эффект стекла */
+        }
+
+        .hero h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 30px; }
+        .hero-subtitle { 
+            font-family: 'Inter'; text-transform: uppercase; letter-spacing: 6px; font-size: 0.85rem; 
+            margin-bottom: 20px; color: var(--gold); display: block;
+        }
+
+        /* --- 5. ADVANTAGES (Horizontal Line) --- */
+        .features { border-bottom: var(--border-thin); padding: 60px 0; background: var(--bg-dark); }
+        .features-grid { 
+            display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px; text-align: center; 
+        }
+        .feature-box { flex: 1; min-width: 250px; }
+        
+        /* Новые иконки: Тонкие и большие */
+        .feature-icon { font-size: 2.5rem; color: var(--gold); margin-bottom: 20px; font-weight: 100; }
+        
+        .feature-box h4 { font-size: 1.1rem; margin-bottom: 10px; font-family: 'Bodoni Moda'; }
+        .feature-box p { color: var(--text-muted); font-size: 0.85rem; }
+
+        /* --- 6. SERVICES (Minimalist List with Hover Image) --- */
+        .services-list { padding: 100px 0; position: relative; }
+        
+        /* Это контейнер для картинок, которые появляются при наведении */
+        .hover-reveal-img {
+            position: absolute; width: 300px; height: 400px; z-index: 10;
+            top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            pointer-events: none; opacity: 0; transition: 0.4s; object-fit: cover;
+            filter: grayscale(100%);
+        }
+
+        .service-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 40px 0; border-bottom: var(--border-thin);
+            cursor: pointer; transition: 0.4s; position: relative;
+        }
+        
+        .service-row:hover { padding-left: 20px; background: rgba(230, 210, 181, 0.03); }
+        .service-row:hover h3 { color: var(--gold); }
+        
+        .service-info h3 { font-size: 2rem; margin-bottom: 5px; }
+        .service-info span { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .service-arrow { font-size: 1.5rem; color: var(--gold); opacity: 0; transition: 0.4s; }
+        .service-row:hover .service-arrow { opacity: 1; transform: translateX(-10px); }
+
+        /* --- 7. PORTFOLIO (Masonry / Art Gallery Style) --- */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+        }
+        
+        .gallery-item { position: relative; overflow: hidden; height: 500px; }
+        .gallery-item:nth-child(2) { margin-top: 50px; } /* Сдвиг для эффекта Masonry */
+        .gallery-item img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            transition: 0.7s ease; filter: sepia(20%) contrast(90%); 
+        }
+        .gallery-item:hover img { transform: scale(1.05); filter: sepia(0%) contrast(100%); }
+
+        /* --- 8. CONTACTS (Dark Map & Minimal Info) --- */
+        .contacts-wrapper { display: grid; grid-template-columns: 1fr 1fr; border-top: var(--border-thin); }
+        
+        .contact-details { padding: 100px 80px; background: var(--bg-panel); }
+        .detail-group { margin-bottom: 50px; }
+        .detail-group i { font-size: 1.5rem; color: var(--gold); margin-bottom: 15px; display: block; }
+        .detail-group h5 { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase; }
+        .detail-group p, .detail-group a { font-size: 1.8rem; font-family: 'Bodoni Moda'; color: var(--white); text-decoration: none; }
+        
+        .map-container { filter: grayscale(100%) invert(100%) contrast(90%); } /* Темная инвертированная карта */
+
+        /* --- 9. FOOTER --- */
+        footer { padding: 40px; text-align: center; border-top: 1px solid #222; font-size: 0.8rem; color: #555; }
+        
+        /* --- MOBILE --- */
+        @media (max-width: 900px) {
+            header { padding: 20px; }
+            .nav-menu { display: none; } /* Можно добавить JS для открытия, но для простоты скроем на демо */
+            .hero h1 { font-size: 2.5rem; }
+            .hero-inner { padding: 40px 20px; width: 90%; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .gallery-item:nth-child(2) { margin-top: 0; }
+            .contacts-wrapper { grid-template-columns: 1fr; }
+            .contact-details { padding: 60px 20px; }
+            .detail-group p { font-size: 1.4rem; }
+        }
+
+        /* WA Button */
+        .wa-sticky {
             position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
-            background: #25d366; color: #fff; border-radius: 50%;
+            background: var(--gold); color: #000; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 1000; transition: 0.3s;
+            font-size: 28px; z-index: 999; box-shadow: 0 0 20px rgba(230, 210, 181, 0.3);
+            text-decoration: none; transition: 0.3s;
         }
-        .float-wa:hover { transform: scale(1.1); }
+        .wa-sticky:hover { transform: scale(1.1); background: #fff; }
 
     </style>
 </head>
 <body>
 
-    <div class="preloader">
-        <div class="loader-logo">AURA</div>
-        <div class="loader-line"></div>
-    </div>
-
-    <div class="cursor-dot"></div>
-    <div class="cursor-circle"></div>
-
-    <header data-aos="fade-down">
-        <div class="logo">AURA.</div>
-        <nav class="nav-desk">
-            <a href="#about">Философия</a>
-            <a href="#services">Ритуалы</a>
-            <a href="#pricing">Прайс</a>
+    <header>
+        <div class="brand">LUMIÈRE</div>
+        <nav class="nav-menu">
+            <a href="#home">Главная</a>
+            <a href="#about">О нас</a>
+            <a href="#services">Услуги</a>
+            <a href="#gallery">Галерея</a>
             <a href="#contacts">Контакты</a>
         </nav>
+        <a href="https://wa.me/77074534518" class="btn-luxury" style="padding: 10px 25px; font-size: 0.7rem; border-color: #fff; color: #fff;">Записаться</a>
     </header>
 
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-
-        <div class="hero-content-readable" data-aos="zoom-out" data-aos-duration="2000">
-            <span class="hero-subtitle">Premium Wellness Sanctuary</span>
-            <h1>Beyond<br>Relaxation</h1>
+    <section id="home" class="hero">
+        <div class="hero-inner" data-aos="fade-up" data-aos-duration="1500">
+            <span class="hero-subtitle">Private Beauty Residence</span>
+            <h1>The Art of<br>Elegance</h1>
             <div style="margin-top: 40px;">
-                <a href="#services" class="btn-gold">Исследовать</a>
+                <a href="#services" class="btn-luxury">Открыть Меню Услуг</a>
             </div>
         </div>
     </section>
 
-    <div class="marquee-container">
-        <div class="marquee-content">
-            <span class="marquee-item">Beauty • Harmony • Silence • Aura Spa • </span>
-            <span class="marquee-item">Wellness • Luxury • Serenity • Gold • </span>
-            <span class="marquee-item">Massage • Facial • Detox • Relax • </span>
-            <span class="marquee-item">Beauty • Harmony • Silence • Aura Spa • </span>
-        </div>
-    </div>
-
-    <section id="about" class="intro-grid">
-        <div data-aos="fade-right">
-            <h4 class="accent">Наша философия</h4>
-            <h2 style="font-size: 2.5rem; margin: 20px 0;">Искусство замедлять время</h2>
-            <p style="color: #bbb; line-height: 1.8;">
-                В мире постоянной гонки мы создали убежище тишины. AURA — это не просто процедуры, это сакральные ритуалы восстановления энергии.
-            </p>
-            <div class="stat-box">
-                <div class="stat">
-                    <h3 class="accent">05</h3>
-                    <p>Лет опыта</p>
+    <section id="about" class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-box" data-aos="fade-up" data-aos-delay="0">
+                    <i class="ri-vip-diamond-line feature-icon"></i>
+                    <h4>Premium Standard</h4>
+                    <p>Космецевтика мирового уровня и стерильность медицинского класса.</p>
                 </div>
-                <div class="stat">
-                    <h3 class="accent">12</h3>
-                    <p>Мастеров SPA</p>
+                <div class="feature-box" data-aos="fade-up" data-aos-delay="150">
+                    <i class="ri-scissors-cut-line feature-icon"></i>
+                    <h4>Expert Hands</h4>
+                    <p>Топ-мастера с международной квалификацией и опытом от 7 лет.</p>
                 </div>
-                <div class="stat">
-                    <h3 class="accent">1K+</h3>
-                    <p>Гостей</p>
+                <div class="feature-box" data-aos="fade-up" data-aos-delay="300">
+                    <i class="ri-goblet-line feature-icon"></i>
+                    <h4>Atmosphere</h4>
+                    <p>Приватность, тишина, авторский чай и игристое для гостей.</p>
                 </div>
             </div>
         </div>
-        <div style="position: relative;" data-aos="fade-left">
-            <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Interior" style="width: 100%; border-radius: 5px; opacity: 0.8;">
+    </section>
+
+    <section id="services" class="section-padding" style="background: #101010;">
+        <div class="container">
+            <div class="title-block" data-aos="fade-up">
+                <h2>Наши Услуги</h2>
+                <span></span>
+                <p>Мы предлагаем только то, в чем достигли совершенства.</p>
+            </div>
+
+            <div class="services-list">
+                <div class="service-row" data-aos="fade-up">
+                    <div class="service-info">
+                        <h3>Парикмахерский зал</h3>
+                        <span>Стрижки • Укладки • AirTouch</span>
+                    </div>
+                    <i class="ri-arrow-right-line service-arrow"></i>
+                </div>
+
+                <div class="service-row" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-info">
+                        <h3>Nail Service</h3>
+                        <span>Маникюр • Педикюр Smart • SPA уход</span>
+                    </div>
+                    <i class="ri-arrow-right-line service-arrow"></i>
+                </div>
+
+                <div class="service-row" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-info">
+                        <h3>Эстетика лица</h3>
+                        <span>Чистка • Массаж лица • Уход</span>
+                    </div>
+                    <i class="ri-arrow-right-line service-arrow"></i>
+                </div>
+
+                <div class="service-row" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-info">
+                        <h3>Визаж & Образ</h3>
+                        <span>Макияж • Брови • Ламинирование</span>
+                    </div>
+                    <i class="ri-arrow-right-line service-arrow"></i>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="services" class="services-section">
-        <div class="section-header" data-aos="fade-up">
-            <h4 class="accent">Коллекция ритуалов</h4>
-            <h2>Выберите свой путь</h2>
-        </div>
-        
-        <div class="cards-container">
-            <div class="glass-card" data-aos="fade-up" data-aos-delay="0">
-                <span class="card-num">01</span>
-                <h3>Stone Therapy</h3>
-                <p>Магия горячих базальтовых камней. Глубокий прогрев мышц.</p>
-                <div class="price-line">
-                    <span>90 мин</span>
-                    <span>20 000 ₸</span>
+    <section id="gallery" class="section-padding">
+        <div class="container">
+            <div class="title-block">
+                <h2>Галерея</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-aos="zoom-in">
+                    <img src="https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?q=80&w=1000&auto=format&fit=crop" alt="Hair Texture">
                 </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                    <img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=1000&auto=format&fit=crop" alt="Interior Detail">
+                </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                    <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=1000&auto=format&fit=crop" alt="Nails Art">
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 60px;">
+                <a href="#" class="btn-luxury">Смотреть все работы</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacts" class="contacts-wrapper">
+        <div class="contact-details">
+            <div class="title-block" style="text-align: left; margin-bottom: 50px;">
+                <h2 style="font-size: 2.5rem;">Контакты</h2>
+                <span style="margin: 20px 0;"></span>
+            </div>
+
+            <div class="detail-group">
+                <i class="ri-map-pin-line"></i>
+                <h5>Локация</h5>
+                <p>пр. Достык, 9</p>
+            </div>
+
+            <div class="detail-group">
+                <i class="ri-phone-line"></i>
+                <h5>Связь</h5>
+                <a href="tel:+77074534518">+7 707 453 45 18</a>
+            </div>
+
+            <div class="detail-group">
+                <i class="ri-time-line"></i>
+                <h5>Часы работы</h5>
+                <p>10:00 — 21:00</p>
             </div>
             
-            <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
-                <span class="card-num">02</span>
-                <h3>Gold Facial</h3>
-                <p>Королевский уход за лицом с использованием маски из 24-каратного золота.</p>
-                <div class="price-line">
-                    <span>60 мин</span>
-                    <span>25 000 ₸</span>
-                </div>
+            <div style="margin-top: 50px; display: flex; gap: 20px;">
+                <a href="#" style="color: #fff; font-size: 1.5rem;"><i class="ri-instagram-line"></i></a>
+                <a href="#" style="color: #fff; font-size: 1.5rem;"><i class="ri-telegram-line"></i></a>
+                <a href="https://wa.me/77074534518" style="color: #fff; font-size: 1.5rem;"><i class="ri-whatsapp-line"></i></a>
             </div>
-            
-            <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
-                <span class="card-num">03</span>
-                <h3>Thai Traditional</h3>
-                <p>Йога для ленивых. Скручивания и растяжки для восстановления энергии.</p>
-                <div class="price-line">
-                    <span>90 мин</span>
-                    <span>18 000 ₸</span>
-                </div>
-            </div>
+        </div>
+
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2506.666!2d71.4!3d51.1!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDA2JzAwLjAiTiA3McKwMjQnMDAuMCJF!5e0!3m2!1sen!2skz!4v1600000000000!5m2!1sen!2skz" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
     </section>
 
-    <section class="video-banner">
-        <div class="video-overlay" data-aos="zoom-in">
-            <h2 class="accent">Подарочный Сертификат</h2>
-            <p style="color: #fff; margin: 20px 0;">Дарите эмоции, а не вещи.</p>
-            <a href="#contacts" class="btn-gold" style="border-color: #fff; color: #fff;">Купить сейчас</a>
-        </div>
-    </section>
-
-    <section id="pricing" class="pricing-section">
-        <div class="section-header">
-            <h2>Детальный Прайс</h2>
-        </div>
-        <div class="accordion">
-            <div class="accordion-item" data-aos="fade-up">
-                <div class="accordion-header">
-                    <h4>Классический массаж</h4>
-                    <span class="accordion-price">от 12 000 ₸</span>
-                </div>
-                <div class="accordion-body">
-                    <p>Базовая техника для снятия усталости. Включает проработку спины и шеи.</p>
-                </div>
-            </div>
-            <div class="accordion-item" data-aos="fade-up" data-aos-delay="100">
-                <div class="accordion-header">
-                    <h4>SPA-программа "Нирвана"</h4>
-                    <span class="accordion-price">35 000 ₸</span>
-                </div>
-                <div class="accordion-body">
-                    <p>3 часа блаженства: Кедровая бочка + Скрабирование + Обертывание + Массаж.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contacts">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <div class="logo" style="margin-bottom: 20px;">AURA.</div>
-                <p>Эксклюзивное пространство для тех, кто ценит приватность.</p>
-            </div>
-            <div class="footer-col">
-                <h5>Контакты</h5>
-                <p>г. Астана, пр. Туран 15, блок Б</p>
-                <a href="tel:+77074534518" class="big-contact">+7 707 453 45 18</a>
-            </div>
-        </div>
-        <div class="copyright">
-            &copy; 2025 AURA SPA. Designed for Excellence.
-        </div>
+    <footer>
+        &copy; 2025 LUMIÈRE. Designed with Passion.
     </footer>
 
-    <a href="https://wa.me/77074534518" class="float-wa"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://wa.me/77074534518" class="wa-sticky" target="_blank">
+        <i class="ri-whatsapp-line"></i>
+    </a>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 1200, once: true });
-
-        window.addEventListener('load', () => {
-            const preloader = document.querySelector('.preloader');
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                preloader.style.visibility = 'hidden';
-            }, 2000);
+        
+        // Simple Scroll header logic
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.background = '#0b0b0b';
+                header.style.padding = '15px 50px';
+                header.style.mixBlendMode = 'normal';
+            } else {
+                header.style.background = 'transparent';
+                header.style.padding = '30px 50px';
+                header.style.mixBlendMode = 'difference';
+            }
         });
-
-        const accordions = document.querySelectorAll('.accordion-header');
-        accordions.forEach(acc => {
-            acc.addEventListener('click', function() {
-                const item = this.parentElement;
-                item.classList.toggle('active');
-                const allItems = document.querySelectorAll('.accordion-item');
-                allItems.forEach(other => { if (other !== item) other.classList.remove('active'); });
-            });
-        });
-
-        if (window.matchMedia("(min-width: 992px)").matches) {
-            const cursorDot = document.querySelector('.cursor-dot');
-            const cursorCircle = document.querySelector('.cursor-circle');
-            window.addEventListener('mousemove', (e) => {
-                cursorDot.style.left = `${e.clientX}px`;
-                cursorDot.style.top = `${e.clientY}px`;
-                cursorCircle.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 500, fill: "forwards" });
-            });
-            document.querySelectorAll('a, .accordion-header').forEach(link => {
-                link.addEventListener('mouseenter', () => {
-                    cursorCircle.style.width = '60px'; cursorCircle.style.height = '60px'; cursorCircle.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
-                });
-                link.addEventListener('mouseleave', () => {
-                    cursorCircle.style.width = '40px'; cursorCircle.style.height = '40px'; cursorCircle.style.backgroundColor = 'transparent';
-                });
-            });
-        }
     </script>
 </body>
 </html>
