@@ -17,13 +17,12 @@
             --gold: #d4af37;
             --gold-dim: #8a7035;
             --black: #050505;
-            --deep-green: #0a1111;
             --text: #e1e1e1;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(212, 175, 55, 0.15);
         }
 
-        /* Зернистость (Film Grain Effect) */
+        /* Зернистость */
         body::before {
             content: "";
             position: fixed;
@@ -34,7 +33,7 @@
             opacity: 0.4;
         }
 
-        /* Кастомный курсор (только десктоп) */
+        /* Кастомный курсор (десктоп) */
         @media (min-width: 992px) {
             .cursor-dot, .cursor-circle {
                 position: fixed;
@@ -48,14 +47,12 @@
             .cursor-circle {
                 width: 40px; height: 40px;
                 border: 1px solid rgba(212, 175, 55, 0.5);
-                transition: width 0.3s, height 0.3s, background 0.3s;
+                transition: width 0.3s, height 0.3s;
             }
             body:hover .cursor-circle { opacity: 1; }
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Скрываем стандартный курсор */ }
-        
-        /* Возвращаем курсор на мобильных */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         @media (max-width: 991px) { * { cursor: auto; } }
 
         html, body {
@@ -100,9 +97,7 @@
 
         /* --- 1. TYPOGRAPHY & UTILS --- */
         h1, h2, h3, h4 { font-family: 'Cinzel', serif; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
-        
         .accent { color: var(--gold); }
-        .dim { color: #666; font-size: 0.9em; }
 
         .btn-gold {
             position: relative;
@@ -141,7 +136,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            mix-blend-mode: difference; /* Эффект наложения на светлые участки */
+            mix-blend-mode: difference;
         }
         
         .logo { font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: 5px; }
@@ -151,14 +146,16 @@
         .nav-desk a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: #fff; transition: 0.3s; }
         .nav-desk a:hover::after { width: 100%; }
 
-        /* --- 3. HERO SECTION (AURA EFFECT) --- */
+        /* --- 3. HERO SECTION (ISPRАВЛЕНИЕ ЦЕНТРОВКИ) --- */
         .hero {
             position: relative;
             height: 100vh;
+            /* ИСПОЛЬЗУЕМ FLEXBOX ДЛЯ ИДЕАЛЬНОГО ЦЕНТРА */
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            text-align: center; /* Центрируем текст внутри */
         }
 
         .hero-bg {
@@ -172,7 +169,6 @@
 
         @keyframes breath { from { transform: scale(1.1); } to { transform: scale(1.15); } }
 
-        /* Магические шары (Aura Blobs) */
         .blob {
             position: absolute;
             border-radius: 50%;
@@ -183,27 +179,19 @@
         .blob-1 { top: 20%; left: 20%; width: 300px; height: 300px; background: #6b4c1e; }
         .blob-2 { bottom: 10%; right: 10%; width: 400px; height: 400px; background: #1a2e2e; }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            mix-blend-mode: overlay; /* Смешивание с фоном */
-            color: #fff; /* Явно задаем белый для работы mix-blend-mode */
-        }
-        
-        /* Чтобы текст читался, добавляем дубль контента без blend-mode */
+        /* ИСПРАВЛЕНО: Убрали absolute positioning, теперь просто блок в потоке flex */
         .hero-content-readable {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+            position: relative; 
             z-index: 3;
-            text-align: center;
             width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+            /* mix-blend-mode вызывает баги на iPhone с текстом, убрали для надежности */
         }
 
         .hero h1 {
-            font-size: 6vw; /* Адаптивный огромный шрифт */
-            line-height: 1;
+            font-size: 6vw;
+            line-height: 1.1;
             margin-bottom: 20px;
             background: linear-gradient(to bottom, #fff, #aaa);
             -webkit-background-clip: text;
@@ -216,9 +204,10 @@
             text-transform: uppercase;
             margin-bottom: 40px;
             color: var(--gold);
+            display: block; /* Чтобы точно занимал строку */
         }
 
-        /* --- 4. MARQUEE (БЕГУЩАЯ СТРОКА) --- */
+        /* --- 4. MARQUEE --- */
         .marquee-container {
             background: var(--gold);
             color: var(--black);
@@ -227,7 +216,7 @@
             white-space: nowrap;
             position: relative;
             z-index: 5;
-            transform: rotate(-2deg) scale(1.1); /* Легкий наклон для стиля */
+            transform: rotate(-2deg) scale(1.1);
             margin: -30px 0 50px 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
@@ -248,7 +237,7 @@
 
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* --- 5. INTRO & STATS --- */
+        /* --- 5. INTRO & SECTIONS --- */
         .intro-grid {
             padding: 100px 10%;
             display: grid;
@@ -268,14 +257,14 @@
         .stat h3 { font-size: 2.5rem; margin-bottom: 5px; }
         .stat p { font-size: 0.8rem; letter-spacing: 2px; color: #888; text-transform: uppercase; }
 
-        /* --- 6. SERVICES (GLASS CARDS) --- */
         .services-section {
             padding: 100px 5%;
             background: radial-gradient(circle at 50% 50%, #151d1d 0%, #050505 100%);
             position: relative;
         }
 
-        .section-header { text-align: center; margin-bottom: 80px; }
+        /* ИСПРАВЛЕНИЕ ЗАГОЛОВКОВ: Обычный flow, без absolute */
+        .section-header { text-align: center; margin-bottom: 80px; width: 100%; }
         .section-header h2 { font-size: 3rem; margin-bottom: 20px; }
 
         .cards-container {
@@ -307,7 +296,6 @@
         }
         
         .glass-card:hover .card-num { color: rgba(212, 175, 55, 0.2); transform: scale(1.2); }
-
         .glass-card h3 { font-size: 1.5rem; margin-bottom: 20px; color: #fff; }
         .glass-card p { color: #aaa; line-height: 1.6; font-size: 0.95rem; margin-bottom: 30px; }
         
@@ -321,46 +309,19 @@
             color: var(--gold);
         }
 
-        /* --- 7. PRICING ACCORDION (Interactive Detail) --- */
-        .pricing-section {
-            padding: 100px 10%;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        /* --- 6. PRICING & VIDEO --- */
+        .pricing-section { padding: 100px 10%; max-width: 1000px; margin: 0 auto; }
 
-        .accordion-item {
-            border-bottom: 1px solid #333;
-            margin-bottom: 10px;
-        }
-
-        .accordion-header {
-            padding: 25px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        
+        .accordion-item { border-bottom: 1px solid #333; margin-bottom: 10px; }
+        .accordion-header { padding: 25px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; }
         .accordion-header:hover h4 { padding-left: 10px; color: #fff; }
         .accordion-header h4 { transition: 0.3s; color: #aaa; font-size: 1.2rem; }
         .accordion-price { color: var(--gold); font-family: 'Cinzel'; }
-
-        .accordion-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
-            color: #888;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        
+        .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; color: #888; font-size: 0.9rem; line-height: 1.6; }
         .accordion-body p { padding-bottom: 25px; }
-
         .active .accordion-body { max-height: 200px; }
         .active .accordion-header h4 { color: var(--gold); padding-left: 10px; }
 
-        /* --- 8. VIDEO BANNER --- */
         .video-banner {
             height: 60vh;
             position: relative;
@@ -376,70 +337,38 @@
             border: 1px solid var(--gold);
             text-align: center;
             backdrop-filter: blur(5px);
+            /* Убрана абсолютная центровка, используется flex родителя */
         }
 
-        /* --- 9. FOOTER --- */
-        footer {
-            background: #080808;
-            padding: 80px 5% 30px;
-            border-top: 1px solid #222;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 50px;
-            margin-bottom: 60px;
-        }
-
+        /* --- 7. FOOTER --- */
+        footer { background: #080808; padding: 80px 5% 30px; border-top: 1px solid #222; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; margin-bottom: 60px; }
         .footer-col h5 { color: #fff; margin-bottom: 25px; letter-spacing: 2px; text-transform: uppercase; }
         .footer-col p, .footer-col a { color: #888; display: block; margin-bottom: 15px; font-size: 0.95rem; text-decoration: none; transition: 0.3s; }
         .footer-col a:hover { color: var(--gold); padding-left: 5px; }
-
-        .big-contact {
-            font-size: 2rem;
-            color: var(--gold);
-            font-family: 'Cinzel', serif;
-            display: block;
-            margin-top: 20px;
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid #1a1a1a;
-            color: #444;
-            font-size: 0.8rem;
-        }
+        .big-contact { font-size: 2rem; color: var(--gold); font-family: 'Cinzel', serif; display: block; margin-top: 20px; }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #1a1a1a; color: #444; font-size: 0.8rem; }
 
         /* --- MOBILE TWEAKS --- */
         @media (max-width: 768px) {
             .nav-desk { display: none; }
-            .hero h1 { font-size: 15vw; }
+            /* Исправляем размер шрифта для мобильных, чтобы не вылезал */
+            .hero h1 { font-size: 3.5rem; } 
             .intro-grid { grid-template-columns: 1fr; gap: 30px; padding: 60px 5%; }
             .marquee-container { transform: rotate(0); margin: 0 0 30px 0; }
             .video-overlay { width: 90%; padding: 30px; }
             .cursor-dot, .cursor-circle { display: none; }
             .stat-box { flex-direction: column; gap: 20px; text-align: center; }
+            
+            /* Убираем возможные переполнения */
+            .section-header h2 { font-size: 2rem; word-wrap: break-word; }
         }
         
-        /* Floating Whatsapp Button */
         .float-wa {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: #25d366;
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-            z-index: 1000;
-            transition: 0.3s;
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background: #25d366; color: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 1000; transition: 0.3s;
         }
         .float-wa:hover { transform: scale(1.1); }
 
@@ -463,7 +392,7 @@
             <a href="#pricing">Прайс</a>
             <a href="#contacts">Контакты</a>
         </nav>
-        </header>
+    </header>
 
     <section class="hero">
         <div class="hero-bg"></div>
@@ -471,7 +400,7 @@
         <div class="blob blob-2"></div>
 
         <div class="hero-content-readable" data-aos="zoom-out" data-aos-duration="2000">
-            <p class="hero-subtitle">Premium Wellness Sanctuary</p>
+            <span class="hero-subtitle">Premium Wellness Sanctuary</span>
             <h1>Beyond<br>Relaxation</h1>
             <div style="margin-top: 40px;">
                 <a href="#services" class="btn-gold">Исследовать</a>
@@ -493,7 +422,7 @@
             <h4 class="accent">Наша философия</h4>
             <h2 style="font-size: 2.5rem; margin: 20px 0;">Искусство замедлять время</h2>
             <p style="color: #bbb; line-height: 1.8;">
-                В мире постоянной гонки мы создали убежище тишины. AURA — это не просто процедуры, это сакральные ритуалы восстановления энергии. Каждая деталь интерьера, каждый аромат и звук подобраны, чтобы погрузить вас в состояние глубокого транса.
+                В мире постоянной гонки мы создали убежище тишины. AURA — это не просто процедуры, это сакральные ритуалы восстановления энергии.
             </p>
             <div class="stat-box">
                 <div class="stat">
@@ -512,9 +441,6 @@
         </div>
         <div style="position: relative;" data-aos="fade-left">
             <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Interior" style="width: 100%; border-radius: 5px; opacity: 0.8;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Infobox_info_icon.svg/1200px-Infobox_info_icon.svg.png" style="display:none;"> <div style="position: absolute; bottom: -30px; right: -30px; width: 120px; height: 120px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: spin 10s linear infinite;">
-                <span style="color: #000; font-weight: 800; font-size: 0.8rem; text-align: center;">PREMIUM<br>QUALITY</span>
-            </div>
         </div>
     </section>
 
@@ -528,7 +454,7 @@
             <div class="glass-card" data-aos="fade-up" data-aos-delay="0">
                 <span class="card-num">01</span>
                 <h3>Stone Therapy</h3>
-                <p>Магия горячих базальтовых камней. Глубокий прогрев мышц, снятие зажимов и полное заземление.</p>
+                <p>Магия горячих базальтовых камней. Глубокий прогрев мышц.</p>
                 <div class="price-line">
                     <span>90 мин</span>
                     <span>20 000 ₸</span>
@@ -538,7 +464,7 @@
             <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
                 <span class="card-num">02</span>
                 <h3>Gold Facial</h3>
-                <p>Королевский уход за лицом с использованием маски из 24-каратного золота. Мгновенное сияние и лифтинг.</p>
+                <p>Королевский уход за лицом с использованием маски из 24-каратного золота.</p>
                 <div class="price-line">
                     <span>60 мин</span>
                     <span>25 000 ₸</span>
@@ -548,7 +474,7 @@
             <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
                 <span class="card-num">03</span>
                 <h3>Thai Traditional</h3>
-                <p>Йога для ленивых. Скручивания, растяжки и точечное воздействие для восстановления потока энергии.</p>
+                <p>Йога для ленивых. Скручивания и растяжки для восстановления энергии.</p>
                 <div class="price-line">
                     <span>90 мин</span>
                     <span>18 000 ₸</span>
@@ -560,7 +486,7 @@
     <section class="video-banner">
         <div class="video-overlay" data-aos="zoom-in">
             <h2 class="accent">Подарочный Сертификат</h2>
-            <p style="color: #fff; margin: 20px 0;">Дарите эмоции, а не вещи. Оформите сертификат на любую сумму онлайн.</p>
+            <p style="color: #fff; margin: 20px 0;">Дарите эмоции, а не вещи.</p>
             <a href="#contacts" class="btn-gold" style="border-color: #fff; color: #fff;">Купить сейчас</a>
         </div>
     </section>
@@ -569,7 +495,6 @@
         <div class="section-header">
             <h2>Детальный Прайс</h2>
         </div>
-        
         <div class="accordion">
             <div class="accordion-item" data-aos="fade-up">
                 <div class="accordion-header">
@@ -577,27 +502,16 @@
                     <span class="accordion-price">от 12 000 ₸</span>
                 </div>
                 <div class="accordion-body">
-                    <p>Базовая техника для снятия усталости. Включает проработку спины, шеи и воротниковой зоны. Используются натуральные масла виноградной косточки.</p>
+                    <p>Базовая техника для снятия усталости. Включает проработку спины и шеи.</p>
                 </div>
             </div>
-
             <div class="accordion-item" data-aos="fade-up" data-aos-delay="100">
                 <div class="accordion-header">
                     <h4>SPA-программа "Нирвана"</h4>
                     <span class="accordion-price">35 000 ₸</span>
                 </div>
                 <div class="accordion-body">
-                    <p>3 часа блаженства: Распаривание в кедровой бочке + Скрабирование морской солью + Обертывание + Расслабляющий массаж всего тела.</p>
-                </div>
-            </div>
-
-            <div class="accordion-item" data-aos="fade-up" data-aos-delay="200">
-                <div class="accordion-header">
-                    <h4>Коррекция фигуры</h4>
-                    <span class="accordion-price">15 000 ₸</span>
-                </div>
-                <div class="accordion-body">
-                    <p>Лимфодренажный или антицеллюлитный массаж. Выводит лишнюю жидкость, подтягивает кожу, уменьшает объемы.</p>
+                    <p>3 часа блаженства: Кедровая бочка + Скрабирование + Обертывание + Массаж.</p>
                 </div>
             </div>
         </div>
@@ -607,20 +521,12 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <div class="logo" style="margin-bottom: 20px;">AURA.</div>
-                <p>Эксклюзивное пространство для тех, кто ценит приватность и высочайший сервис.</p>
+                <p>Эксклюзивное пространство для тех, кто ценит приватность.</p>
             </div>
-            
             <div class="footer-col">
                 <h5>Контакты</h5>
                 <p>г. Астана, пр. Туран 15, блок Б</p>
-                <a href="mailto:info@auraspa.kz">info@auraspa.kz</a>
                 <a href="tel:+77074534518" class="big-contact">+7 707 453 45 18</a>
-            </div>
-
-            <div class="footer-col">
-                <h5>Режим работы</h5>
-                <p>Пн - Пт: 10:00 - 22:00</p>
-                <p>Сб - Вс: 09:00 - 23:00</p>
             </div>
         </div>
         <div class="copyright">
@@ -628,84 +534,47 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/77074534518" class="float-wa">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <a href="https://wa.me/77074534518" class="float-wa"><i class="fab fa-whatsapp"></i></a>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // 1. Init Animations
         AOS.init({ duration: 1200, once: true });
 
-        // 2. Preloader Logic
         window.addEventListener('load', () => {
             const preloader = document.querySelector('.preloader');
             setTimeout(() => {
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
-            }, 2000); // 2 секунды показа
+            }, 2000);
         });
 
-        // 3. Custom Cursor Logic (Mouse Follow)
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorCircle = document.querySelector('.cursor-circle');
-
-        if (window.matchMedia("(min-width: 992px)").matches) {
-            window.addEventListener('mousemove', (e) => {
-                const posX = e.clientX;
-                const posY = e.clientY;
-
-                // Точка двигается мгновенно
-                cursorDot.style.left = `${posX}px`;
-                cursorDot.style.top = `${posY}px`;
-
-                // Круг двигается с задержкой (эффект тягучести)
-                cursorCircle.animate({
-                    left: `${posX}px`,
-                    top: `${posY}px`
-                }, { duration: 500, fill: "forwards" });
-            });
-
-            // Эффект при наведении на ссылки
-            const links = document.querySelectorAll('a, .accordion-header, button');
-            links.forEach(link => {
-                link.addEventListener('mouseenter', () => {
-                    cursorCircle.style.width = '60px';
-                    cursorCircle.style.height = '60px';
-                    cursorCircle.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
-                    cursorDot.style.display = 'none';
-                });
-                link.addEventListener('mouseleave', () => {
-                    cursorCircle.style.width = '40px';
-                    cursorCircle.style.height = '40px';
-                    cursorCircle.style.backgroundColor = 'transparent';
-                    cursorDot.style.display = 'block';
-                });
-            });
-        }
-
-        // 4. Accordion Logic
         const accordions = document.querySelectorAll('.accordion-header');
         accordions.forEach(acc => {
             acc.addEventListener('click', function() {
                 const item = this.parentElement;
                 item.classList.toggle('active');
-                
-                // Закрываем другие (аккордеонный эффект)
                 const allItems = document.querySelectorAll('.accordion-item');
-                allItems.forEach(other => {
-                    if (other !== item) other.classList.remove('active');
-                });
+                allItems.forEach(other => { if (other !== item) other.classList.remove('active'); });
             });
         });
 
-        // 5. Spin Animation helper
-        const styleSheet = document.createElement("style");
-        styleSheet.innerText = `
-            @keyframes spin { 100% { transform: rotate(360deg); } }
-        `;
-        document.head.appendChild(styleSheet);
-
+        if (window.matchMedia("(min-width: 992px)").matches) {
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorCircle = document.querySelector('.cursor-circle');
+            window.addEventListener('mousemove', (e) => {
+                cursorDot.style.left = `${e.clientX}px`;
+                cursorDot.style.top = `${e.clientY}px`;
+                cursorCircle.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 500, fill: "forwards" });
+            });
+            document.querySelectorAll('a, .accordion-header').forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    cursorCircle.style.width = '60px'; cursorCircle.style.height = '60px'; cursorCircle.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
+                });
+                link.addEventListener('mouseleave', () => {
+                    cursorCircle.style.width = '40px'; cursorCircle.style.height = '40px'; cursorCircle.style.backgroundColor = 'transparent';
+                });
+            });
+        }
     </script>
 </body>
 </html>
